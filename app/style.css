@@ -1,0 +1,214 @@
+/* Neon Coast Cover Studio — editor chrome. Dark stage, sunset accents. */
+@font-face {
+  font-family: 'Anton';
+  src: url('../fonts/Anton-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Pacifico';
+  src: url('../fonts/Pacifico-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+:root {
+  --bg: #0d0a14;
+  --panel: #171226;
+  --panel-2: #1f1832;
+  --line: #2c2344;
+  --text: #f4f0ff;
+  --muted: #a99ec7;
+  --gold: #ffd23e;
+  --pink: #ff2e88;
+  --orange: #ff5e3a;
+  --accent: linear-gradient(135deg, var(--gold), var(--orange) 55%, var(--pink));
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif;
+  min-height: 100vh;
+}
+
+header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 16px 22px 10px;
+}
+header h1 {
+  font-family: Anton, sans-serif;
+  font-size: 30px;
+  letter-spacing: 2px;
+  margin: 0;
+  background: var(--accent);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+header h1 span { -webkit-text-fill-color: var(--text); color: var(--text); }
+header p { margin: 0; color: var(--muted); font-size: 13px; }
+
+main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 18px;
+  padding: 8px 22px 22px;
+  align-items: start;
+}
+@media (max-width: 980px) {
+  main { grid-template-columns: 1fr; }
+}
+
+.stage { min-width: 0; }
+#dropZone {
+  border: 2px dashed var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  background: #120d20;
+  transition: border-color 0.15s, background 0.15s;
+}
+#dropZone.over { border-color: var(--pink); background: #1d1030; }
+#preview {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  cursor: grab;
+  background: #fff;
+}
+#preview:focus { outline: 2px solid var(--pink); outline-offset: 2px; }
+#panelHint {
+  margin: 10px 2px 0;
+  color: var(--muted);
+  font-size: 13px;
+  min-height: 20px;
+}
+.drop-note { color: var(--muted); font-size: 12px; margin: 8px 2px 0; text-align: center; }
+
+aside {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+section.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+}
+section.card h2 {
+  font-family: Anton, sans-serif;
+  font-size: 15px;
+  letter-spacing: 2px;
+  margin: 0 0 10px;
+  color: var(--gold);
+}
+section.card h2 small { color: var(--muted); font-family: system-ui, sans-serif; font-size: 11px; letter-spacing: 0; }
+.hint { color: var(--muted); font-size: 12px; margin: 6px 0 0; }
+
+.btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+button {
+  font: inherit;
+  color: var(--text);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+button:hover { border-color: var(--pink); }
+button:disabled { opacity: 0.4; cursor: default; }
+button.active { border-color: var(--gold); background: #2c2145; color: var(--gold); }
+button.primary {
+  background: var(--accent);
+  border: none;
+  color: #160a24;
+  font-family: Anton, sans-serif;
+  font-size: 17px;
+  letter-spacing: 2px;
+  padding: 12px 16px;
+  width: 100%;
+}
+button.primary:hover { filter: brightness(1.1); }
+button.ghost { background: transparent; }
+.chip { padding: 6px 10px; font-size: 13px; }
+
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.grid-3 button { padding: 9px 4px; font-size: 13px; }
+.swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.swatch { padding: 0; height: 40px; overflow: hidden; position: relative; }
+.swatch i { display: block; height: 100%; width: 100%; }
+.swatch span {
+  position: absolute; inset: auto 0 0 0;
+  background: rgba(8, 4, 18, 0.75);
+  font-size: 10px; text-align: center; padding: 2px 0;
+}
+.swatch.active { outline: 2px solid var(--gold); outline-offset: 1px; }
+
+label.field { display: block; margin-bottom: 10px; }
+label.field span { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+input[type="text"], input[type="range"] { width: 100%; }
+input[type="text"] {
+  background: #0f0b1c;
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font: inherit;
+}
+input[type="text"]:focus { border-color: var(--pink); outline: none; }
+input[type="range"] { accent-color: var(--pink); }
+.zoom-row { display: flex; align-items: center; gap: 10px; }
+.zoom-row output { min-width: 44px; text-align: right; color: var(--gold); font-weight: 700; }
+
+footer {
+  padding: 0 22px 18px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  transform: translate(-50%, 20px);
+  background: #241a3d;
+  border: 1px solid var(--gold);
+  color: var(--text);
+  padding: 10px 16px;
+  border-radius: 10px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+  z-index: 10;
+  max-width: 90vw;
+  text-align: center;
+}
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* Screenshot scene: the editor, compact so preview + controls fit one frame. */
+body.shot-editor #preview { height: 540px; width: auto; max-width: 100%; }
+
+/* Screenshot scene: the cover alone, full frame, nothing else. */
+body.shot-cover { background: #fff; }
+body.shot-cover header,
+body.shot-cover aside,
+body.shot-cover footer,
+body.shot-cover #panelHint,
+body.shot-cover .drop-note { display: none !important; }
+body.shot-cover main { display: block; padding: 0; }
+body.shot-cover #dropZone { border: none; padding: 0; background: none; border-radius: 0; }
+body.shot-cover #preview {
+  width: 100vw;
+  height: 100vh;
+  object-fit: contain;
+  border-radius: 0;
+  cursor: default;
+}
